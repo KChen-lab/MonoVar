@@ -10,16 +10,9 @@ class Single_Cell_Ftrs_Pos:
 	# Constructor takes the list of info for the current position as input ([contig, loc, ref, depth, primary_bases, base_q]) 
 	def __init__(self, refBase, current_pos_info_list):
 		if (int(current_pos_info_list[0]) == 0):
-			# self.contig        = ''
-			# self.position      = 0
-			# self.refBase       = ''
 			self.depth         = 0
-			# self.primary_bases = ''
-			# self.base_q        = ''
 			self.refDepth      = 0
 		else:
-			# self.contig        = current_pos_info_list[0]
-			# self.position      = int(current_pos_info_list[1])
 			self.refBase       = refBase
 			self.depth         = int(current_pos_info_list[0])
 			self.primary_bases = current_pos_info_list[1]
@@ -308,59 +301,6 @@ class Single_Cell_Ftrs_Pos:
 		elif (genotype_flag == 1):
 			self.cell_prob_1 = self.cell_prob_1_50d
 			return self.cell_prob_1_50d
-
-		# probability = 1.0
-
-		# if (genotype_flag == 0):
-		# 	key_curr_base = (g, self.refBase)
-		# 	curr_base_genotype_prob = self.prior_allele_mat.getValue(key_curr_base)
-		# 	complement_curr_base_genotype_prob = 1 - curr_base_genotype_prob
-		# 	for i in range(ub):
-		# 		curr_base = self.final_bases[i]
-		# 		# curr_base = U.refineBase(self.final_bases[i])
-		# 		curr_err  = self.base_qual_val_list[i] 
-		# 		if (curr_base == self.refBase):
-		# 			prob_i = curr_err*complement_curr_base_genotype_prob/3 + (1-curr_err)*curr_base_genotype_prob
-		# 		else:
-		# 			prob_i = curr_err*curr_base_genotype_prob + (1-curr_err)*complement_curr_base_genotype_prob/3
-		# 		probability = probability * prob_i
-		# 	self.cell_prob_0 = probability
-		# 	# print probability
-		# 	return probability
-
-		# elif (genotype_flag == 2):
-		# 	# print self.cell_index, "hello printing cell2 "
-		# 	key_curr_base = (g, self.altBase)
-		# 	curr_base_genotype_prob = self.prior_allele_mat.getValue(key_curr_base)
-		# 	complement_curr_base_genotype_prob = 1 - curr_base_genotype_prob
-		# 	for i in range(ub):
-		# 		curr_base = self.final_bases[i]
-		# 		# curr_base = U.refineBase(self.final_bases[i])
-		# 		curr_err  = self.base_qual_val_list[i] 
-		# 		if (curr_base == self.altBase):
-		# 			prob_i = curr_err*complement_curr_base_genotype_prob/3 + (1-curr_err)*curr_base_genotype_prob
-		# 		else:
-		# 			prob_i = curr_err*curr_base_genotype_prob + (1-curr_err)*complement_curr_base_genotype_prob/3
-		# 		probability = probability * prob_i
-		# 	self.cell_prob_2 = probability
-		# 	# print probability
-		# 	return probability
-
-		# else:
-		# 	gt0 = self.refBase + self.refBase
-		# 	gt2 = self.altBase + self.altBase
-
-		# 	# prob_1 = self.Calc_Prob_gt(gt0, max_depth)
-		# 	prob_1 = self.cell_prob_0
-		# 	prob_2 = self.Calc_Prob_gt(g, max_depth)
-		# 	# prob_3 = self.Calc_Prob_gt(gt2, max_depth)
-		# 	prob_3 = self.cell_prob_2
-
-		# 	probability = 0.8*prob_2 + 0.1*prob_1 + 0.1*prob_3
-		# 	self.cell_prob_1 = probability
-		# 	# print probability
-		# 	return probability
-		# # print probability
 
 	def Prob_Reads_Given_Genotype_Genotyping(self, gt_flag):
 		if gt_flag == 0:
