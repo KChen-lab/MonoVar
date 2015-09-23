@@ -4,8 +4,8 @@
 
 ## Dependencies ##
 
-Python: NumPy, SciPy
-Samtools (included in the external folder)
+* Python: NumPy, SciPy
+* Samtools (included in the external folder)
 
 ### What is this repository for? ###
 
