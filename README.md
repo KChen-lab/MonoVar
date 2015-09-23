@@ -1,6 +1,11 @@
-**MonoVar** is a single nucleotide variant (SNV) detection and genotyping algorithm for single cell sequencing data.
+## Overview ##
 
-This README would normally document whatever steps are necessary to get your application up and running.
+**MonoVar** is a single nucleotide variant (SNV) detection and genotyping algorithm for single cell DNA sequencing data. It takes a list of bam files as input and outputs a vcf file containing the detected SNVs.
+
+## Dependencies ##
+
+Python: NumPy, SciPy
+Samtools (included in the external folder)
 
 ### What is this repository for? ###
 
