@@ -8,7 +8,7 @@ from glob import glob
 
 VCF_meta_template="""##fileformat=VCFv4.1
 ##fileDate={_t.tm_year}-{_t.tm_mon}-{_t.tm_mday}
-##source=scSNV
+##source=MonoVar
 {_d.FILTER_META}{_d.INFO_META}{_d.FORMAT_META}{_d.REF_META}#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{_d.FILES_META}
 """
 
