@@ -7,6 +7,25 @@
 * Python: NumPy, SciPy
 * Samtools (included in the external folder)
 
+## Installation ##
+
+Clone the MonoVar repository: 
+
+```
+#!python
+git clone git@bitbucket.org:hamimzafar/monovar.git
+cd monovar
+
+```
+Install the MonoVar python package:
+
+```
+#!python
+
+sudo python setup.py install
+```
+
+
 ### What is this repository for? ###
 
 * Quick summary
