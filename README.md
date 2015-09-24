@@ -55,6 +55,8 @@ The arguments of MonoVar are as follows:
 -a: Offset for prior probability for allelic drop out (Default value: 0.2)
 -m: Number of threads to use in multiprocessing (Default value: 1)
 ```
+We recommend using cutoff 40 for mapping quality when using samtools mpileup. To use the probabilistic realignment for the computation of Base Alignment Quality, drop the ```-B``` while running samtools mpileup.  
+
 
  
 
