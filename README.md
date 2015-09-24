@@ -25,6 +25,15 @@ Install the MonoVar python package:
 sudo python setup.py install
 ```
 
+Add the samtools binary to the PATH:
+
+```
+#!python
+
+export PATH=$PATH:/CURR_DIR/external/samtools/samtools
+```
+
+
 
 ### What is this repository for? ###
 
