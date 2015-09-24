@@ -54,13 +54,19 @@ copy_reg.pickle(types.MethodType, _pickle_method)
 U = Utils_Functions()
 M = MP_single_cell_genotype()
 
+# Default values 
+pe = 0.002
+pad = 0.2
+thr = 0.05
+m_thread = 1
+
+input_args = {}
+
 ## Process the inputs 
 argc = len(sys.argv)
 i = 1
 while (i < argc):
-	if (sys.argv[i] == '-n'):
-		n_cells = int(sys.argv[i+1]) 	  # Number of input files
-	elif (sys.argv[i] == '-p'):
+	if (sys.argv[i] == '-p'):
 		pe = float(sys.argv[i+1])    	  # probability of error
 	elif (sys.argv[i] == '-d'):      
 		pd = float(sys.argv[i+1])    	  # probability of deamination error
@@ -68,15 +74,39 @@ while (i < argc):
 		pad = float(sys.argv[i+1])  	  # Probability of ADO
 	elif (sys.argv[i] == '-f'):
 		ref_file = sys.argv[i+1]          # Reference Genome File
+		input_args['-f'] = 'Provided'
 	elif (sys.argv[i] == '-b'):			  
 		bam_file_list = sys.argv[i+1]	  # File containing list of bam files
+		input_args['-b'] = 'Provided'
 	elif (sys.argv[i] == '-o'):
 		outfile = sys.argv[i+1]      	  # Output File
+		input_args['-o'] = 'Provided'
 	elif (sys.argv[i] == '-t'):
 		thr = float(sys.argv[i+1])        # threshold to use for calling variant
 	elif (sys.argv[i] == '-m'):
 		m_thread = int(sys.argv[i+1])     # Number of threads to use in multiprocessing
 	i = i + 2
+
+
+try:
+	b = input_args['-f'] 
+except KeyError:
+	print "Error: Reference genome file not provided. Use '-f' for reference genome file.\n"
+	exit(3)
+
+try:
+	b = input_args['-b'] 
+except KeyError:
+	print "Error: List of Bam files not provided. Use '-b' for list of Bam files.\n"
+	exit(3)
+
+try:
+	b = input_args['-o'] 
+except KeyError:
+	print "Error: Output file not provided. Use '-o' for Output file.\n"
+	exit(3)
+
+n_cells = len(bam_file_list)
 
 ## Initialize the pool of multiprocessing
 pool = mp.Pool(processes=m_thread)

@@ -1,0 +1,3 @@
+data_files/1S110_sorted.bam
+data_files/1S111_sorted.bam
+data_files/1S112_sorted.bam
