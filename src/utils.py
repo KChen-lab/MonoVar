@@ -1,3 +1,32 @@
+"""
+The MIT License
+
+Copyright (c) 2015
+The University of Texas MD Anderson Cancer Center
+Hamim Zafar and Ken Chen (kchen3@mdanderson.org)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+"""
+
 import math, heapq
 import copy, re, sys, numpy as np
 import pysam
@@ -7,9 +36,6 @@ import fileinput
 from contextlib import closing
 from base_q_ascii import Ascii_Table
 from alleles_prior import allele_prior
-# from genotype_prob_mat import Genotype_Prob_matrix
-# from nu_genotype_single_cell import Single_cell_genotype_records
-#from Single_Cell_Ftrs_Pos import Single_Cell_Ftrs_Pos
 
 base_q_tbl = Ascii_Table()
 

@@ -1,3 +1,32 @@
+"""
+The MIT License
+
+Copyright (c) 2015
+The University of Texas MD Anderson Cancer Center
+Hamim Zafar and Ken Chen (kchen3@mdanderson.org)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+"""
+
 from genotype_prob_mat import Genotype_Prob_matrix
 from nu_genotype_single_cell import Single_cell_genotype_records
 from utils import Utils_Functions
@@ -18,9 +47,9 @@ class MP_single_cell_genotype:
                         curr_cell_residual_mat.denom_prob_matrix = curr_cell_residual_mat.fill_matrix(cp_read_supported_cell_list, n_cells - 1, nCr_matrix)
                 curr_cell_residual_mat.dim = curr_cell_residual_mat.denom_prob_matrix.shape
                 cell_genotype_obj = Single_cell_genotype_records(current_cell_ftr_info, cp_read_supported_cell_list, curr_cell_residual_mat, other_cell_list_len, n_cells, prior_allele_mat, prior_variant_number)
-                p_g0 = ((cell_genotype_obj.find_genotype_prob(0, nCr_matrix))/denominator)#*current_cell_ftr_info.cell_prob_0
-                p_g1 = ((cell_genotype_obj.find_genotype_prob(1, nCr_matrix))/denominator)#*current_cell_ftr_info.cell_prob_1
-                p_g2 = ((cell_genotype_obj.find_genotype_prob(2, nCr_matrix))/denominator)#*current_cell_ftr_info.cell_prob_2
+                p_g0 = ((cell_genotype_obj.find_genotype_prob(0, nCr_matrix))/denominator)
+                p_g1 = ((cell_genotype_obj.find_genotype_prob(1, nCr_matrix))/denominator)
+                p_g2 = ((cell_genotype_obj.find_genotype_prob(2, nCr_matrix))/denominator)
                 
 
                 p_list = [p_g0, p_g1, p_g2]
@@ -68,13 +97,8 @@ class MP_single_cell_genotype:
                         GQ = 3240
                 final_genotype = genotype_dict[g_ind]
                 cell_barcode = str(g_ind)
-                # print current_cell_ftr_info.cell_index, current_cell_ftr_info.cell_prob_0, current_cell_ftr_info.cell_prob_1, current_cell_ftr_info.cell_prob_2, norm_p_list, cell_barcode
-                # cell_alt_count = max(current_cell_ftr_info.A_cnt, current_cell_ftr_info.T_cnt, current_cell_ftr_info.G_cnt, current_cell_ftr_info.C_cnt)
-                # cell_info_string = str(p_list)
                 cell_info_list = [final_genotype, ','.join([str(current_cell_ftr_info.refDepth), str(current_cell_ftr_info.altcount)]), str(current_cell_ftr_info.depth), str(GQ), ','.join([str(i) for i in PL])]
                 cell_info_string = ':'.join(cell_info_list)
-                # cell_info_string = final_genotype + ':' + str(current_cell_ftr_info.refDepth) + ',' + str(current_cell_ftr_info.altcount) + ':' + str(current_cell_ftr_info.depth) + \
-                # ':' + str(GQ)+':'+ str(PL[0])+','+str(PL[1])+','+str(PL[2])
                 return (cell_info_string, cell_barcode)
 
         def pre_compute_likelihood(self, refBase, altBase, Alt_freq, prior_allele_mat, max_depth, sngle_cell_obj):
