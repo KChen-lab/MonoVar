@@ -41,6 +41,21 @@ The program requires multiple bam files. We have included three sample bam files
 
 samtools mpileup -BQ0 -d10000 -f ref.fa -q 40 -b filenames.txt | python ../src/monovar.py -n 3 -p 0.002 -a 0.2 -t 0.05 -m 2 -f ref.fa -b filenames.txt -o output.vcf
 ```
+The arguments of MonoVar are as follows:
+
+```
+#!python
+
+-n: Number of input Bam files.
+-b: Text file containing the full path for each Bam file. One file per line.
+-f: Reference genome file.
+-o: Output file.
+-t: Threshold to be used for variant calling (Recommended value: 0.05)
+-p: Offset for prior probability for false-positive error (Recommended value: 0.002)
+-a: Offset for prior probability for allelic drop out (Default value: 0.2)
+-m: Number of threads to use in multiprocessing (Default value: 1)
+```
+
  
 
 
