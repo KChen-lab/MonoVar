@@ -30,8 +30,18 @@ Add the samtools binary to the PATH:
 ```
 #!python
 
-export PATH=$PATH:/CURR_DIR/external/samtools/samtools
+export PATH=$PATH:$CURR_DIR/external/samtools/samtools
 ```
+
+## Usage ##
+The program requires multiple bam files. We have included three sample bam files in the folder examples. To run MonoVar, a reference genome file is also needed. Assuming indexed reference genome file to be ref.fa and present in the examples directory, run MonoVar on the provided bam files as follows:
+
+```
+#!python
+
+samtools mpileup -BQ0 -d10000 -f ref.fa -q 40 -b filenames.txt | python ../src/monovar.py -n 3 -p 0.002 -a 0.2 -t 0.05 -m 2 -f ref.fa -b filenames.txt -o output.vcf
+```
+ 
 
 
 
