@@ -66,7 +66,9 @@ input_args = {}
 argc = len(sys.argv)
 i = 1
 while (i < argc):
-	if (sys.argv[i] == '-p'):
+	if (sys.argv[i] == '-n'):
+		n_cells = int(sys.argv[i+1])      # Number of input bam files
+	elif (sys.argv[i] == '-p'):
 		pe = float(sys.argv[i+1])    	  # probability of error
 	elif (sys.argv[i] == '-d'):      
 		pd = float(sys.argv[i+1])    	  # probability of deamination error
@@ -106,7 +108,8 @@ except KeyError:
 	print "Error: Output file not provided. Use '-o' for Output file.\n"
 	exit(3)
 
-n_cells = len(bam_file_list)
+
+
 
 ## Initialize the pool of multiprocessing
 pool = mp.Pool(processes=m_thread)
@@ -180,8 +183,8 @@ for line in sys.stdin:
 	elif (total_depth <= 10):
 		continue
 
-	elif ((total_depth > 1000) & (Alt_freq <= 0.003)):
-		continue
+#	elif ((total_depth > 1000) & (Alt_freq <= 0.003)):
+#		continue
 
 	else:
 		read_supported_cell_list = []    	    # List for storing the sngl_cell_objs that have read support, will be further used in the model
