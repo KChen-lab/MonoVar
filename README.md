@@ -25,12 +25,22 @@ Install the MonoVar python package:
 sudo python setup.py install
 ```
 
-Add the samtools binary to the PATH:
+Give execute permission to the file monovar.py
 
 ```
 #!python
 
-export PATH=$PATH:$CURR_DIR/external/samtools/samtools
+chmod +x src/monovar.py
+```
+
+Add the samtools folder and src folder to the PATH:
+
+```
+#!python
+
+CURR_DIR=$(pwd)
+export PATH=$PATH:$CURR_DIR/external/samtools
+export PATH=$PATH:$CURR_DIR/src
 ```
 
 ## Usage ##
