@@ -4,7 +4,7 @@
 
 ## Dependencies ##
 
-* Python: NumPy, SciPy
+* Python: NumPy, SciPy, Pysam ([https://code.google.com/p/pysam/]())
 * Samtools (included in the external folder)
 
 ## Installation ##
