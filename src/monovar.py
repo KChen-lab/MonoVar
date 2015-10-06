@@ -111,8 +111,11 @@ try:
 except KeyError:
 	print "Error: Output file not provided. Use '-o' for Output file.\n"
 	exit(3)
-
-
+try:
+	assert CF_flag <= 1
+except AssertionError:
+	print "CF_flag can have value 0 or 1. Use '-c' with proper value.\n"
+	exit(3)
 
 
 ## Initialize the pool of multiprocessing
