@@ -60,6 +60,7 @@ pe = 0.002
 pad = 0.2
 thr = 0.05
 m_thread = 1
+CF_flag = 1
 
 input_args = {}
 
@@ -86,6 +87,8 @@ while (i < argc):
 		input_args['-o'] = 'Provided'
 	elif (sys.argv[i] == '-t'):
 		thr = float(sys.argv[i+1])        # threshold to use for calling variant
+	elif (sys.argv[i] == '-c'):
+		CF_flag = int(sys.argv[i+1])      # Flag for using Consensus Filter
 	elif (sys.argv[i] == '-m'):
 		m_thread = int(sys.argv[i+1])     # Number of threads to use in multiprocessing
 	i = i + 2
@@ -285,13 +288,24 @@ for line in sys.stdin:
 			info_record = [str(AC), "%.2f" % AF, str(AN), "%.2f" % baseQranksum, str(total_depth), str(QD), "%.2f" % oddsRatio, "%.2f" % max_prob_ratio, "%.2f" % PSARR]
 			info_names = [i[0] for i in vcf.info_fields]
 			info_string = ';'.join('%s=%s' % t for t in zip(info_names, info_record))
+			
+			if CF_flag == 1:
+				filter_flag = U.Consensus_Filter(barcode)
+				if filter_flag == 1:
+					vcf_record.get6fields(refBase, altBase, '.', Qual, 'PASS', info_string)
+				else:
+					vcf_record.get6fields(refBase, altBase, '.', Qual, '.', info_string)
+				vcf_record.format_vcf(info_list)
+				vcf_record.get_passcode(barcode)
+				vcf.print_my_record(vcf_record)
 			# info_string = 'AC='+ str(AC) +';'+ 'AF='+ "%.2f" % AF +';'+'AN='+ str(AN) + ';' + 'BaseQRankSum=' + "%.2f" % baseQranksum + ';' \
 			#  + 'DP=' + str(total_depth) + ';' + 'QD=' + str(QD) + ';' \
 			#  + 'SOR=' + "%.2f" % oddsRatio + ';' + 'MPR=' + "%.2f" % max_prob_ratio + ';' + 'PSARR=' + "%.2f" % PSARR #+ 'RR=' + str(refRatio) + ';' + 'AR=' + str(altRatio) + ';' \
-			vcf_record.get6fields(refBase, altBase, '.', Qual, '.', info_string)
-			vcf_record.format_vcf(info_list)
-			vcf_record.get_passcode(barcode)
-			vcf.print_my_record(vcf_record)
+			else:
+				vcf_record.get6fields(refBase, altBase, '.', Qual, '.', info_string)
+				vcf_record.format_vcf(info_list)
+				vcf_record.get_passcode(barcode)
+				vcf.print_my_record(vcf_record)
 
 
 

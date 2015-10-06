@@ -427,6 +427,23 @@ class Utils_Functions:
             num = float(Alt_count)/alt_smpl_count
             return num/denom
 
+        def Consensus_Filter(self, barcode):
+            nu_barcode = barcode[1:-1]
+            g_count = 0
+            for i in nu_barcode:
+                if i == '0':
+                    g_count += 0
+                elif i == 'X':
+                    g_count += 0
+                elif i == '1':
+                    g_count += 1
+                elif i == '2':
+                    g_count += 1
+            if g_count > 1:
+                return 1
+            else:
+                return 0
+
 
 
 
