@@ -64,6 +64,6 @@ The arguments of Monovar are as follows:
 -p: Offset for prior probability for false-positive error (Recommended value: 0.002)
 -a: Offset for prior probability for allelic drop out (Default value: 0.2)
 -m: Number of threads to use in multiprocessing (Default value: 1)
--c: Flag indicating whether to use Consensus Filter (CF) or not (Possible values: 0, 1, Default Value: 1, if 1 then CF is used, otherwise not used)  
+-c: Flag indicating whether to use Consensus Filter (CF) or not (Possible values: 0, 1; Default Value: 1; if 1 then CF is used, otherwise not used)  
 ```
 We recommend using cutoff 40 for mapping quality when using ```samtools mpileup```. To use the probabilistic realignment for the computation of Base Alignment Quality, drop the ```-B``` while running ```samtools mpileup```.
