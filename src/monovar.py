@@ -205,9 +205,6 @@ for line in sys.stdin:
         		if read_flag == 1:
         			alt_allele_flag = U.CheckAltAllele(sngl_cell_ftr_obj)
         			sngl_cell_ftr_obj.Get_base_call_string_nd_quals(refBase)
-        		# sngl_cell_ftr_obj.Get_Ins_Del_rmvd_bases() # Get the insertions and deletions
-        		# sngl_cell_ftr_obj.Get_Base_Qual_Vals()     # Construct the list of base quality values
-        		# sngl_cell_ftr_obj.Get_Base_Calls(refBase)  # Construct the base call string
         			sngl_cell_ftr_obj.Get_Alt_Allele_Count()   # Get the alt allele counts
         			sngl_cell_ftr_obj.Set_Cell_Index(c)        # Save the cell index
         			if alt_allele_flag == 1:
@@ -252,10 +249,10 @@ for line in sys.stdin:
 
 		## Probability of SNV passes the threshold
 		if zero_variant_prob <= thr:
-			# print denominator
+
 			(max_prob_ratio, max_prob_allele_count) = U.find_max_prob_ratio(Calc_var_prob_obj.matrix, Calc_var_prob_obj.matrix_shape)
-			# (refRatio, altRatio, oddsRatio) = U.calc_strand_bias(read_supported_cell_list)
 			(oddsRatio, pval) = U.calc_strand_bias(read_supported_cell_list, Alt_count)
+
 			if (total_ref_depth > 0):
 				(baseQranksum, baseQranksum_p_val) = U.Calc_Base_Q_Rank_Sum(read_supported_cell_list, refBase, altBase)
 			else:
@@ -288,7 +285,7 @@ for line in sys.stdin:
 			info_record = [str(AC), "%.2f" % AF, str(AN), "%.2f" % baseQranksum, str(total_depth), str(QD), "%.2f" % oddsRatio, "%.2f" % max_prob_ratio, "%.2f" % PSARR]
 			info_names = [i[0] for i in vcf.info_fields]
 			info_string = ';'.join('%s=%s' % t for t in zip(info_names, info_record))
-			
+
 			if CF_flag == 1:
 				filter_flag = U.Consensus_Filter(barcode)
 				if filter_flag == 1:
@@ -298,9 +295,7 @@ for line in sys.stdin:
 				vcf_record.format_vcf(info_list)
 				vcf_record.get_passcode(barcode)
 				vcf.print_my_record(vcf_record)
-			# info_string = 'AC='+ str(AC) +';'+ 'AF='+ "%.2f" % AF +';'+'AN='+ str(AN) + ';' + 'BaseQRankSum=' + "%.2f" % baseQranksum + ';' \
-			#  + 'DP=' + str(total_depth) + ';' + 'QD=' + str(QD) + ';' \
-			#  + 'SOR=' + "%.2f" % oddsRatio + ';' + 'MPR=' + "%.2f" % max_prob_ratio + ';' + 'PSARR=' + "%.2f" % PSARR #+ 'RR=' + str(refRatio) + ';' + 'AR=' + str(altRatio) + ';' \
+
 			else:
 				vcf_record.get6fields(refBase, altBase, '.', Qual, '.', info_string)
 				vcf_record.format_vcf(info_list)
