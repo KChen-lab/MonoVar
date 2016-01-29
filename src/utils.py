@@ -413,11 +413,20 @@ class Utils_Functions:
 
         def Get_BAM_RG(self, bam_file):
             rows = pysam.view("-H", bam_file)
+            flag = 0
             for r in rows:
                 if r.startswith('@RG'):
                     r_l = r.split('\t')
                     id = r_l[1].split(':')
+                    flag = 1
                     return id[1]
+            if flag == 0:
+                bam_id_row = bam_file.split('/')
+                bam_id = bam_id_row[-1]
+                bam_id = bam_id.replace('..', '')
+                bam_id = bam_id.replace('~', '')
+                return bam_id
+
 
         def Calc_Per_Smpl_Alt_Ref_Ratio(self, total_ref_depth, Alt_count, read_smpl_count, alt_smpl_count):
             if total_ref_depth == 0:

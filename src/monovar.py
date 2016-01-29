@@ -117,6 +117,15 @@ except AssertionError:
 	print "CF_flag can have value 0 or 1. Use '-c' with proper value.\n"
 	exit(3)
 
+## Obtain the RG IDs from the bam files
+bam_id_list = []
+f_bam_list = open(bam_file_list)
+for filename in f_bam_list:
+	filename = filename.replace('\n', '')
+	bam_id = U.Get_BAM_RG(filename)
+	bam_id_list.append(bam_id)
+
+n_cells = len(bam_id_list)
 
 ## Initialize the pool of multiprocessing
 pool = mp.Pool(processes=m_thread)
@@ -135,14 +144,6 @@ nCr_matrix     = U.Create_nCr_mat(max_allele_cnt, factorial_list)    # Table for
 prior_variant_dict = {}
 for i in range(n_cells + 1):
 	prior_variant_dict[i] = U.calc_prior(theta, i, 1)
-
-## Obtain the RG IDs from the bam files
-bam_id_list = []
-f_bam_list = open(bam_file_list)
-for filename in f_bam_list:
-	filename = filename.replace('\n', '')
-	bam_id = U.Get_BAM_RG(filename)
-	bam_id_list.append(bam_id)
 
 ## Open VCF file and print header
 f_vcf = open(outfile, 'w')

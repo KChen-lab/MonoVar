@@ -4,7 +4,7 @@
 
 ## Dependencies ##
 
-* Python: NumPy, SciPy, Pysam ([https://code.google.com/p/pysam/]())
+* Python: NumPy v1.8.1 ([http://www.numpy.org/]()), SciPy v0.14.0 ([http://www.scipy.org/]()), Pysam v0.8.1 ([https://code.google.com/p/pysam/]())
 * Samtools (included in the external folder)
 
 ## Installation ##
@@ -44,19 +44,18 @@ export PATH=$PATH:$CURR_DIR/src
 ```
 
 ## Usage ##
-The program requires multiple bam files. We have included three sample bam files in the folder examples. To run Monovar, a reference genome file is also needed. Assuming indexed reference genome file to be ref.fa and present in the examples directory, go to the examples directory and run Monovar on the provided bam files as follows:
+The program requires multiple bam files. The bam files should be sorted by coordinates. The raw sequence reads in .fastq format should be aligned to a reference genome with the help of an aligner program (e.g., BWA ([http://bio-bwa.sourceforge.net/]())). Aligner like BWA generates sam files containing aligned reads. The sam file can be converted to compressed bam files using ```samtools view``` command (see Samtools manual for details [http://www.htslib.org/doc/samtools.html]()). We have included three sample bam files in the folder examples. To run Monovar, a reference genome file is also needed. Assuming indexed reference genome file to be ref.fa and present in the examples directory, go to the examples directory and run Monovar on the provided bam files as follows:
 
 ```
 #!python
 
-samtools mpileup -BQ0 -d10000 -f ref.fa -q 40 -b filenames.txt | monovar.py -n 3 -p 0.002 -a 0.2 -t 0.05 -m 2 -f ref.fa -b filenames.txt -o output.vcf
+samtools mpileup -BQ0 -d10000 -f ref.fa -q 40 -b filenames.txt | monovar.py -p 0.002 -a 0.2 -t 0.05 -m 2 -f ref.fa -b filenames.txt -o output.vcf
 ```
 The arguments of Monovar are as follows:
 
 ```
 #!python
 
--n: Number of input Bam files
 -b: Text file containing the full path for each Bam file. One file per line.
 -f: Reference genome file.
 -o: Output file.
