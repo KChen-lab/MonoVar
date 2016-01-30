@@ -45,6 +45,7 @@ export PATH=$PATH:$CURR_DIR/src
 
 ## Usage ##
 The program requires multiple bam files. The bam files should be sorted by coordinates. The raw sequence reads in .fastq format should be aligned to a reference genome with the help of an aligner program (e.g., BWA ([http://bio-bwa.sourceforge.net/]())). Aligner like BWA generates sam files containing aligned reads. The sam files can be converted to compressed bam files using ```samtools view``` command (see Samtools manual for details [http://www.htslib.org/doc/samtools.html]()). 
+
 We have included three sample bam files in the folder examples. To run Monovar, a reference genome file is also needed. Assuming indexed reference genome file to be ref.fa and present in the examples directory, go to the examples directory and run Monovar on the provided bam files as follows:
 
 ```
