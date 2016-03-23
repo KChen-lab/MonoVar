@@ -5,7 +5,7 @@
 ## Dependencies ##
 
 * Python: NumPy v1.8.1 ([http://www.numpy.org/]()), SciPy v0.14.0 ([http://www.scipy.org/]()), Pysam v0.8.1 ([https://code.google.com/p/pysam/]())
-* Samtools (included in the external folder)
+* Samtools v0.1.19 (included in the external folder)
 
 ## Installation ##
 
