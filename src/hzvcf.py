@@ -28,26 +28,30 @@ SOFTWARE.
 """
 
 import argparse
-import os, sys
+import os
+import sys
 import gzip
 from subprocess import Popen, PIPE, check_call
-import re, time
+import re
+import time
 from glob import glob
 
 
-VCF_meta_template="""##fileformat=VCFv4.1
+VCF_meta_template = """##fileformat=VCFv4.1
 ##fileDate={_t.tm_year}-{_t.tm_mon}-{_t.tm_mday}
 ##source=MonoVar
 {_d.FILTER_META}{_d.INFO_META}{_d.FORMAT_META}{_d.REF_META}#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{_d.FILES_META}
 """
 
-VCF_record_template="{_r.CHROM}\t{_r.POS}\t{_r.ID}\t{_r.REF}\t{_r.ALT}\t{_r.QUAL}\t{_r.FILTER}\t{_r.INFO}\t{_r.FORMAT}\t{_r.PASSCODE}\n"
+VCF_record_template = "{_r.CHROM}\t{_r.POS}\t{_r.ID}\t{_r.REF}\t{_r.ALT}\t{_r.QUAL}\t{_r.FILTER}\t{_r.INFO}\t{_r.FORMAT}\t{_r.PASSCODE}\n"
+
 
 class VCFRecord():
 
     def __init__(self):
 
         self.info = {}
+
 
 class VCFDocument():
 
@@ -62,20 +66,32 @@ class VCFDocument():
 
     def populate_fields(self, bam_id_list):
         self.filter_fields.append(('LowQual', 'Low quality'))
-        self.format_fields.append(('AD','.','Integer','Allelic depths for the ref and alt alleles in the order listed'))
-        self.format_fields.append(('DP','1','Integer','Approximate read depth (reads with MQ=255 or with bad mates are filtered)'))
-        self.format_fields.append(('GQ','1','Integer','Genotype Quality'))
-        self.format_fields.append(('GT','1','String','Genotype'))
-        self.format_fields.append(('PL','G','Integer','Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification'))
-        self.info_fields.append(('AC','A','Integer','Allele count in genotypes, for each ALT allele, in the same order as listed'))
-        self.info_fields.append(('AF','A','Float','Allele Frequency, for each ALT allele, in the same order as listed'))
-        self.info_fields.append(('AN','1','Integer','Total number of alleles in called genotypes'))
-        self.info_fields.append(('BaseQRankSum','1','Float','Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities'))
-        self.info_fields.append(('DP','1','Integer','Approximate read depth; some reads may have been filtered'))
-        self.info_fields.append(('QD','1','Float','Variant Confidence/Quality by Depth'))
-        self.info_fields.append(('SOR','1','Float','Symmetric Odds Ratio of 2x2 contingency table to detect strand bias'))
-        self.info_fields.append(('MPR','1','Float','Log Odds Ratio of maximum value of probability of observing non-ref allele to the probability of observing zero non-ref allele'))
-        self.info_fields.append(('PSARR', '1', 'Float','Ratio of per-sample Alt allele supporting reads to Ref allele supporting reads'))
+        self.format_fields.append(
+            ('AD', '.', 'Integer', 'Allelic depths for the ref and alt alleles in the order listed'))
+        self.format_fields.append(
+            ('DP', '1', 'Integer', 'Approximate read depth (reads with MQ=255 or with bad mates are filtered)'))
+        self.format_fields.append(('GQ', '1', 'Integer', 'Genotype Quality'))
+        self.format_fields.append(('GT', '1', 'String', 'Genotype'))
+        self.format_fields.append(
+            ('PL', 'G', 'Integer', 'Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification'))
+        self.info_fields.append(
+            ('AC', 'A', 'Integer', 'Allele count in genotypes, for each ALT allele, in the same order as listed'))
+        self.info_fields.append(
+            ('AF', 'A', 'Float', 'Allele Frequency, for each ALT allele, in the same order as listed'))
+        self.info_fields.append(
+            ('AN', '1', 'Integer', 'Total number of alleles in called genotypes'))
+        self.info_fields.append(
+            ('BaseQRankSum', '1', 'Float', 'Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities'))
+        self.info_fields.append(
+            ('DP', '1', 'Integer', 'Approximate read depth; some reads may have been filtered'))
+        self.info_fields.append(
+            ('QD', '1', 'Float', 'Variant Confidence/Quality by Depth'))
+        self.info_fields.append(
+            ('SOR', '1', 'Float', 'Symmetric Odds Ratio of 2x2 contingency table to detect strand bias'))
+        self.info_fields.append(
+            ('MPR', '1', 'Float', 'Log Odds Ratio of maximum value of probability of observing non-ref allele to the probability of observing zero non-ref allele'))
+        self.info_fields.append(
+            ('PSARR', '1', 'Float', 'Ratio of per-sample Alt allele supporting reads to Ref allele supporting reads'))
         self.files_list = bam_id_list
 
     def populate_reference(self, ref_file):
@@ -83,21 +99,24 @@ class VCFDocument():
 
     def print_header(self):
 
-        self.FILTER_META=''.join('##FILTER=<ID=%s,Description="%s">\n' % _ for _ in self.filter_fields)
-        self.FORMAT_META=''.join('##FORMAT=<ID=%s,Number=%s,Type=%s,Description="%s">\n' % _ for _ in self.format_fields)
-        self.INFO_META=''.join('##INFO=<ID=%s,Number=%s,Type=%s,Description="%s">\n' % _ for _ in self.info_fields)
-        self.FILES_META='\t'.join(self.files_list)
-        self.REF_META='##reference=file:{0}\n'.format(self.ref_file)
+        self.FILTER_META = ''.join(
+            '##FILTER=<ID=%s,Description="%s">\n' % _ for _ in self.filter_fields)
+        self.FORMAT_META = ''.join(
+            '##FORMAT=<ID=%s,Number=%s,Type=%s,Description="%s">\n' % _ for _ in self.format_fields)
+        self.INFO_META = ''.join(
+            '##INFO=<ID=%s,Number=%s,Type=%s,Description="%s">\n' % _ for _ in self.info_fields)
+        self.FILES_META = '\t'.join(self.files_list)
+        self.REF_META = '##reference=file:{0}\n'.format(self.ref_file)
         self.outf.write(VCF_meta_template.format(_d=self, _t=time.localtime()))
 
     def print_record(self, record):
 
-        record.INFO=';'.join("%s=%s" % (_[0], str(record.info[_[0]])) for _ in self.info_fields if _[0] in record.info)
+        record.INFO = ';'.join("%s=%s" % (
+            _[0], str(record.info[_[0]])) for _ in self.info_fields if _[0] in record.info)
         self.outf.write(VCF_record_template.format(_r=record))
 
     def print_my_record(self, record):
         self.outf.write(VCF_record_template.format(_r=record))
-
 
     def close(self):
 
@@ -128,7 +147,8 @@ class VRecord:
     def format_vcf(self, samples):
         self.FORMAT = "\t".join(samples)
         # return "%s\t%d\t%s\t%s\n" % (self.chrm, self.pos, "\t".join(self.text2to8), "\t".join([self.data[_] for _ in samples]))
-        # return "%s\t%d\t%s\t%s\n" % (self.chrm, self.pos, "\t".join(text2to8), "\t".join(samples))
+        # return "%s\t%d\t%s\t%s\n" % (self.chrm, self.pos,
+        # "\t".join(text2to8), "\t".join(samples))
 
 
 class VCF:
@@ -153,7 +173,7 @@ class VCF:
             line = self.fh.readline()
             if not line:
                 break
-            
+
             if line.startswith("#CHROM"):
                 self.samplelist = line.strip().split()[9:]
                 self.chrmline = '\t'.join(line.split()[:9])
@@ -162,7 +182,7 @@ class VCF:
                 self.header += line
 
     def format_header(self):
-        return self.header+self.chrmline+'\t'+'\t'.join(self.samplelist)
+        return self.header + self.chrmline + '\t' + '\t'.join(self.samplelist)
 
     def format1(self, r):
 
@@ -186,7 +206,8 @@ class VCF:
             r = VRecord(pair[0], pair[1])
             r.text2to8 = pair[2:9]
             r.id = pair[2]
-            r.data = dict(zip(self.samplelist, [_.split(":")[0] for _ in pair[9:]]))
+            r.data = dict(
+                zip(self.samplelist, [_.split(":")[0] for _ in pair[9:]]))
             yield r
 
     def fetch_region(self, chrm, beg, end):
@@ -195,8 +216,10 @@ class VCF:
             pair = line.split("\t")
             r = VRecord(pair[0], pair[1])
             r.text2to8 = pair[2:9]
-            r.data = dict(zip(self.samplelist, [_.split(":")[0] for _ in pair[9:]]))
+            r.data = dict(
+                zip(self.samplelist, [_.split(":")[0] for _ in pair[9:]]))
             yield r
+
 
 def main_compare(args):
 
@@ -211,7 +234,7 @@ def main_compare(args):
 
     intersample = set(vcf2.samplelist) & set(vcf1.samplelist)
     print len(intersample), "overlapping samples"
-    
+
     cs2g2 = {}
     for r in vcf2.read1():
         for s in intersample:
@@ -233,7 +256,8 @@ def main_compare(args):
     for var1 in vars:
         sys.stdout.write(var1)
         for var2 in vars:
-            sys.stdout.write('\t%d' % len([_ for _ in overlap if cs2g1[_] == var1 and cs2g2[_] == var2]))
+            sys.stdout.write('\t%d' % len(
+                [_ for _ in overlap if cs2g1[_] == var1 and cs2g2[_] == var2]))
         sys.stdout.write('\n')
 
 
@@ -247,7 +271,7 @@ def main_filter(args):
     with open(args.cid) as fh:
         for line in fh:
             pair = line.split('\t')
-            cids.add(pair[args.cidcol-1])
+            cids.add(pair[args.cidcol - 1])
 
     print vcf.format_header()
     for r in vcf.read1():
@@ -255,7 +279,7 @@ def main_filter(args):
             print vcf.format1(r)
 
     return
-    
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='vcf tool')
@@ -269,10 +293,9 @@ if __name__ == '__main__':
     psr_filter = subparsers.add_parser("filter", help=""" filter vcf """)
     psr_filter.add_argument('-v', help='VCF file')
     psr_filter.add_argument('--cid', help='call id list')
-    psr_filter.add_argument('--cidcol', type=int, default=1, help='call id column index (1-based) [1]')
+    psr_filter.add_argument('--cidcol', type=int, default=1,
+                            help='call id column index (1-based) [1]')
     psr_filter.set_defaults(func=main_filter)
 
     args = parser.parse_args()
     args.func(args)
-
-
