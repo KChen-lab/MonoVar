@@ -167,7 +167,7 @@ f_vcf = open(outfile, 'w')
 vcf = VCFDocument(f_vcf)
 vcf.populate_fields(bam_id_list)
 vcf.populate_reference(ref_file)
-# vcf.print_header()
+vcf.print_header()
 
 # List of all single_cell_ftr_pos object
 All_single_cell_ftrs_list = n_cells * [None]
