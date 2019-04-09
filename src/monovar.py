@@ -205,6 +205,9 @@ for line in sys.stdin:
     elif ((total_depth > 30) & ((Alt_count <= 2) | (Alt_freq <= 0.001))):
         continue
 
+    elif (Alt_freq <= 0.01):
+        continue
+
     # Bad reference, so filtered
     elif (refBase not in ['A', 'T', 'G', 'C']):
         continue
