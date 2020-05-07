@@ -119,7 +119,7 @@ except KeyError:
     print "Error: Reference genome file not provided. Use '-f' for reference genome file.\n"
     exit(3)
 
-if not( '-b' in input_args or '-l' in input_args):
+if not(bam_file_list or cell_name_list):
     print "Error: List of Bam files or list of read groups not provided. Use '-b' or '-l', respectively.\n"
     exit(3)
 
