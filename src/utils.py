@@ -109,7 +109,7 @@ class Utils_Functions:
         return factorial_list
 
     def Create_nCr_mat(self, max_allele_cnt, factorial_list):
-        ncr_mat = np.zeros((max_allele_cnt, max_allele_cnt))
+        ncr_mat = np.zeros((max_allele_cnt, max_allele_cnt), dtype=np.longdouble)
         for i in range(max_allele_cnt):
             for j in range(max_allele_cnt):
                 ncr_mat[j, i] = factorial_list[j] / \
