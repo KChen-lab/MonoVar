@@ -6,6 +6,8 @@ Copyright (c) 2015
 The University of Texas MD Anderson Cancer Center
 Hamim Zafar and Ken Chen (kchen3@mdanderson.org)
 
+Copyright (c) 2020 Warren W. Kretzschmar
+
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including
@@ -79,6 +81,8 @@ input_args = {}
 # Process the inputs
 argc = len(sys.argv)
 i = 1
+bam_file_list = None
+cell_name_list = None
 while (i < argc):
     if (sys.argv[i] == '-n'):
         n_cells = int(sys.argv[i + 1])      # Number of input bam files
@@ -93,7 +97,8 @@ while (i < argc):
         input_args['-f'] = 'Provided'
     elif (sys.argv[i] == '-b'):
         bam_file_list = sys.argv[i + 1]	  # File containing list of bam files
-        input_args['-b'] = 'Provided'
+    elif (sys.argv[i] == '-l'):
+        cell_name_list = sys.argv[i + 1]  # File containing list of cell names
     elif (sys.argv[i] == '-o'):
         outfile = sys.argv[i + 1]      	  # Output File
         input_args['-o'] = 'Provided'
@@ -114,10 +119,8 @@ except KeyError:
     print "Error: Reference genome file not provided. Use '-f' for reference genome file.\n"
     exit(3)
 
-try:
-    b = input_args['-b']
-except KeyError:
-    print "Error: List of Bam files not provided. Use '-b' for list of Bam files.\n"
+if not( '-b' in input_args or '-l' in input_args):
+    print "Error: List of Bam files or list of read groups not provided. Use '-b' or '-l', respectively.\n"
     exit(3)
 
 try:
@@ -131,13 +134,21 @@ except AssertionError:
     print "CF_flag can have value 0 or 1. Use '-c' with proper value.\n"
     exit(3)
 
-# Obtain the RG IDs from the bam files
 bam_id_list = []
-f_bam_list = open(bam_file_list)
-for filename in f_bam_list:
-    filename = filename.replace('\n', '')
-    bam_id = U.Get_BAM_RG(filename)
-    bam_id_list.append(bam_id)
+if bam_file_list:
+    # Obtain the RG IDs from the bam files
+    f_bam_list = open(bam_file_list)
+    for filename in f_bam_list:
+        filename = filename.replace('\n', '')
+        bam_id = U.Get_BAM_RG(filename)
+        bam_id_list.append(bam_id)
+elif cell_name_list:
+    # Obtain the RG IDs from the rg name list
+    f_bam_list = open(cell_name_list)
+    for filename in f_bam_list:
+        bam_id_list.append(filename.rstrip('\n'))
+else:
+    raise Exception("Neither -b nor -l provided")
 
 n_cells = len(bam_id_list)
 
