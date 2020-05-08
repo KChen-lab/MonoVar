@@ -110,10 +110,10 @@ class Utils_Functions:
 
     def Create_nCr_mat(self, max_allele_cnt, factorial_list):
         ncr_mat = np.zeros((max_allele_cnt, max_allele_cnt), dtype=np.longdouble)
+        factorial_list = np.array(factorial_list)
         for i in range(max_allele_cnt):
-            for j in range(max_allele_cnt):
-                ncr_mat[j, i] = factorial_list[j] / \
-                    (factorial_list[i] * factorial_list[j - i])
+            ncr_mat[:, i] = factorial_list / \
+                (factorial_list[i] * np.roll(factorial_list, i))
         return ncr_mat
 
     def CheckAltAllele(self, single_cell_dict):
